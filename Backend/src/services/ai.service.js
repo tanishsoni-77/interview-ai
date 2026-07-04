@@ -1,4 +1,4 @@
-console.log("NEW AI SERVICE RUNNING");
+
 
 const {GoogleGenAI} = require("@google/genai")
 const {z} = require("zod")
