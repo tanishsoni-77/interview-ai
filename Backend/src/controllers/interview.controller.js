@@ -14,7 +14,7 @@ async function generateInterViewReportContoller (req, res) {
         jobDescription
 
     })
-
+ 
     const interviewReport = await interviewReportModel.create({
         user: req.user.id,
         resume : resumeContent.text ,
@@ -22,6 +22,8 @@ async function generateInterViewReportContoller (req, res) {
         jobDescription,
         ...interViewReportByAi
     })
+    console.log("SAVED REPORT:");
+    console.log(interviewReport);    
 res.status(201).json({
     message:"Interview report generated successfully",
     interviewReport
