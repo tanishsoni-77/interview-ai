@@ -1,30 +1,70 @@
 import React from 'react'
 import "../style/home.scss"
+
 const Home = () => {
-  return (
-    <main className='home'>
-        <div className="interview-input-group">
-        <div className="left">
-            <label htmlFor="jobDescription">jobDescription</label>
-            <textarea name="jobDescription" id="jobDescription" placeholder='Enter job Description here...'></textarea>
-        </div>
-        <div className="right">
-            <div className="input-group">
-                <p>Resume <small className='highlight'>(Use resume and self Description together for best resultf)</small></p>
-                <label className="file-label" htmlFor="resume">Upload Resume</label>
-                <input hidden type="file" name= "resume" id="resume"  accept=".pdf" />
-            </div>
-            <div className="input-group">
-                <label htmlFor="selfDescription">selfDescription</label>
-                <textarea name="selfDescription" id="selfDescription" placeholder='Describe yourself in few sentences'></textarea>
-            </div>
-            <button className="button primary-button"> Generate Interview Report</button>
-        </div>
+    return (
+        <main className="home">
+            <div className="container">
+                <h1 className="title">Create Your Custom <span className="accent">Interview Plan</span></h1>
 
-        </div>
+                <section className="card">
+                    <div className="left-panel">
+                        <div className="panel-header">
+                            <h2>Target Job Description</h2>
+                            <span className="badge">REQUIRED</span>
+                        </div>
+                        <textarea
+                            id="jobDescription"
+                            name="jobDescription"
+                            className="job-description"
+                            placeholder="Paste the full job description here... e.g. 'Senior Frontend Engineer at Google requires proficiency in React, TypeScript, and large-scale system design...'"
+                            maxLength={5000}
+                        />
+                        <div className="meta-row">
+                            <small className="hint">AI-Powered Strategy Generation · Approx 30s</small>
+                            <small className="counter">0 / 5000 chars</small>
+                        </div>
+                    </div>
 
-    </main>
-  )
+                    <div className="right-panel">
+                        <div className="profile-card">
+                            <div className="profile-header">
+                                <h3>Your Profile</h3>
+                                <span className="small-badge">BEST RESULTS</span>
+                            </div>
+
+                            <label className="upload-area" htmlFor="resume">
+                                <div className="upload-inner">
+                                    <div className="upload-icon">📎</div>
+                                    <p className="upload-text">Click to upload or drag & drop</p>
+                                    <p className="upload-sub">PDF or DOCX (Max 5MB)</p>
+                                </div>
+                            </label>
+                            <input id="resume" name="resume" type="file" accept=".pdf,.doc,.docx" hidden />
+
+                            <div className="or-divider">OR</div>
+
+                            <label htmlFor="selfDescription" className="sr-only">Quick Self-Description</label>
+                            <textarea
+                                id="selfDescription"
+                                name="selfDescription"
+                                className="self-description"
+                                placeholder="Briefly describe your experience, key skills, and years of experience if you don't have a resume handy..."
+                            />
+
+                            <div className="note">
+                                Either a <strong>Resume</strong> or a <strong>Self Description</strong> is required to generate a personalized plan.
+                            </div>
+
+                            <div className="actions">
+                                <button className="generate-btn">Generate My Interview Strategy</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    )
 }
 
 export default Home

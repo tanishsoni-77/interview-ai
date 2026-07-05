@@ -1,64 +1,120 @@
+$bg: #0f1316;
+$card: #0f161a;
+$muted: #9aa6b2;
+$accent: #ff2f7a;
+
 .home{
     width: 100%;
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    padding: 48px 24px;
+    background: linear-gradient(180deg, #0b0d0f 0%, #0f1316 100%);
 
-    .interview-input-group{
+    .container{
+        width: 1100px;
+        max-width: 96%;
+    }
+
+    .title{
+        color: #fff;
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 18px;
+    }
+    .accent{
+        color: $accent;
+    }
+
+    .card{
         display: flex;
-        justify-content: center;
-        gap: 1rem;
-        min-width: 600px;
-        min-height: 500px;
+        gap: 24px;
+        background: $card;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 8px 30px rgba(2,6,23,0.6);
     }
 
-    textarea{
-        height: 100%;
-        width: 100%;
-        border: none;
-        outline: none;
-        padding-inline: 1rem;
-        padding-block: 0.75rem;
-        border-radius: 0.5rem;
-        background-color: #1a1f27;
-        color: whitesmoke;
-        resize: none;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    .left-panel,
+    .right-panel{
+        flex: 1 1 0;
     }
 
-    .left{
-        
-        width: 50%;
-        align-self: stretch;
+    .left-panel{
+        max-width: 62%;
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 12px;
 
-    }
-
-    .file-label{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0.75rem 1rem;
-        background-color: #c4cbd6;
-        color: rgb(20, 19, 19);
-        border-radius: 0.5rem;
-        cursor: pointer;
-        margin-left: 1rem;
-
-    }
-    .right{
-        display: flex;
-        justify-content: flex-start;
-        flex-direction: column;
-        align-self: stretch;
-        gap: 1rem;
-        width: 50%;
-    }
-
-    .input-group:has(textarea){
-        height: 100%;
+        .panel-header{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            h2{ color: #fff; margin: 0; }
+            .badge{ background: rgba(255,47,122,0.12); color: $accent; padding: 6px 10px; border-radius: 8px; font-weight: 600; font-size: 12px; }
         }
+
+        .job-description{
+            min-height: 330px;
+            width: 100%;
+            border-radius: 8px;
+            padding: 16px;
+            background: #0b0f12;
+            color: #e6eef6;
+            border: 1px solid rgba(255,255,255,0.03);
+            resize: vertical;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .meta-row{ display:flex; justify-content:space-between; color: $muted; font-size: 12px; margin-top: 8px; }
+    }
+
+    .right-panel{
+        max-width: 38%;
+        display:flex;
+        align-items:flex-start;
+
+        .profile-card{
+            width:100%;
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+
+            .profile-header{ display:flex; justify-content:space-between; align-items:center; h3{margin:0;color:#fff;} .small-badge{ background:#1b2430; color:$muted; padding:4px 8px; border-radius:6px; font-size:11px; }
+            }
+
+            .upload-area{
+                display:block;
+                border: 1px dashed rgba(255,255,255,0.06);
+                background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+                border-radius: 8px;
+                padding: 22px;
+                text-align:center;
+                color: $muted;
+                cursor: pointer;
+            }
+
+            .upload-inner{ display:flex; flex-direction:column; gap:6px; align-items:center; }
+            .upload-icon{ font-size:28px }
+            .upload-text{ color:#fff; font-weight:600 }
+            .upload-sub{ color:$muted; font-size:12px }
+
+            .or-divider{ text-align:center; color:$muted; margin:6px 0; font-weight:600 }
+
+            .self-description{ min-height:120px; border-radius:8px; padding:12px; background:#071016; color:#e6eef6; border:1px solid rgba(255,255,255,0.03); resize:none }
+
+            .note{ background:#0b1720; color:$muted; padding:10px; border-radius:8px; font-size:13px }
+
+            .actions{ display:flex; justify-content:flex-end; }
+            .generate-btn{ background: $accent; color: #fff; border:none; padding:12px 18px; border-radius:8px; cursor:pointer; font-weight:700 }
+        }
+    }
+}
+
+@media (max-width: 900px){
+    .home .card{ flex-direction:column; }
+    .home .left-panel{ max-width:100% }
+    .home .right-panel{ max-width:100% }
 }
