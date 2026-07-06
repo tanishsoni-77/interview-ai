@@ -37,10 +37,10 @@ const Home = () => {
                                 <div className="upload-inner">
                                     <div className="upload-icon">📎</div>
                                     <p className="upload-text">Click to upload or drag & drop</p>
-                                    <p className="upload-sub">PDF or DOCX (Max 5MB)</p>
+                                    <p className="upload-sub">PDF (Max 3MB)</p>
                                 </div>
                             </label>
-                            <input id="resume" name="resume" type="file" accept=".pdf,.doc,.docx" hidden />
+                            <input id="resume" name="resume" type="file" accept=".pdf" hidden />
 
                             <div className="or-divider">OR</div>
 
