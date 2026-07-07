@@ -51,6 +51,72 @@ const sampleData = {
   ],
 }
 
+const roadmap = [
+  {
+    day: "Day 1",
+    title: "React Fundamentals",
+    tasks: [
+      "Revise Components & Props",
+      "Practice State and Hooks",
+      "Build a small React app"
+    ]
+  },
+  {
+    day: "Day 2",
+    title: "Node.js & Express",
+    tasks: [
+      "Understand Event Loop",
+      "Create REST APIs",
+      "Practice Express Routing"
+    ]
+  },
+  {
+    day: "Day 3",
+    title: "MongoDB",
+    tasks: [
+      "Learn CRUD Operations",
+      "Practice Aggregation Pipeline",
+      "Create Database Schema"
+    ]
+  },
+  {
+    day: "Day 4",
+    title: "Authentication",
+    tasks: [
+      "Study JWT",
+      "Implement Login & Register",
+      "Secure Protected Routes"
+    ]
+  },
+  {
+    day: "Day 5",
+    title: "Interview Preparation",
+    tasks: [
+      "Solve MERN Interview Questions",
+      "Practice Behavioral Questions",
+      "Revise System Design Basics"
+    ]
+  },
+  {
+    day: "Day 6",
+    title: "Project Improvement",
+    tasks: [
+      "Optimize Performance",
+      "Fix UI Bugs",
+      "Improve Responsiveness"
+    ]
+  },
+  {
+    day: "Day 7",
+    title: "Mock Interview",
+    tasks: [
+      "Take AI Mock Interview",
+      "Review Weak Areas",
+      "Prepare Final Notes"
+    ]
+  }
+]
+
 const Interview = ({ data = sampleData }) => {
   return (
     <main className="interview-page">
@@ -107,9 +173,29 @@ const Interview = ({ data = sampleData }) => {
 
             <section id="roadmap" className="section-block roadmap-block">
               <div className="section-header">
-                <h2>Road Map</h2>
+                <h2>Preparation Road Map</h2>
+                <span className="small-badge">7-day plan</span>
               </div>
-              <p className="roadmap-note">Review the model answers and focus on the intention behind each question for your prep.</p>
+
+              <div className="timeline">
+                {roadmap.map((item) => (
+                  <div key={item.day} className="timeline-row">
+                    <div className="timeline-marker" aria-hidden>
+                      <span className="dot" />
+                    </div>
+
+                    <div className="timeline-card">
+                      <div className="timeline-day">{item.day}</div>
+                      <h3 className="timeline-title">{item.title}</h3>
+                      <ul className="timeline-tasks">
+                        {item.tasks.map((t, i) => (
+                          <li key={i}>{t}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </section>
           </section>
 
