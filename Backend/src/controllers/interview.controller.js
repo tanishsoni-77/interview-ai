@@ -2,6 +2,11 @@ const pdfParse = require("pdf-parse")
 const generateInterviewReport = require("../services/ai.service")
 const interviewReportModel = require ("../models/interviewReport.model")
 
+/**
+ * @description generate new interview report on the basis of user 
+ * selfdescription , resume pdf and job description
+ */
+
 async function generateInterViewReportContoller (req, res) {
    
 
@@ -22,8 +27,7 @@ async function generateInterViewReportContoller (req, res) {
         jobDescription,
         ...interViewReportByAi
     })
-    console.log("SAVED REPORT:");
-    console.log(interviewReport);    
+      
 res.status(201).json({
     message:"Interview report generated successfully",
     interviewReport
@@ -31,6 +35,34 @@ res.status(201).json({
     
 }
 
+/**
+ * @description get interview report on the basis of interviewId
+ */
+
+async function getInterviewReportByIdController (req, res) {
+    const {interviewId} = req.params
+
+    const interviewReport = await interviewReportModel.findOne({_id:interviewId, user:req.user.id})
+
+    if(!interviewReport){
+        return res.status(404).json({
+            message:"Interview report not found"
+        })
+    }
+    res.status(200).json({
+        message:"Interview report fetched successfully",
+        interviewReport
+    })
+}
+  /**
+   * @description get all interview reports of the logged in user
+   */
+async function getAllInterviewReportsController (req, res) {
+    const interviewReports = await interviewReportModel.find({user:req.user.id}).sort({createdAt:-1})
+}
 
 
-module.exports = {generateInterViewReportContoller}
+
+
+module.exports = { generateInterViewReportContoller,
+                   getInterviewReportByIdController }
