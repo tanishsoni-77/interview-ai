@@ -1,7 +1,24 @@
-import React from 'react'
+import React ,{useState, useRef}from 'react'
 import "../style/home.scss"
+import { useInterview } from '../hooks/useInterview.js'
+import { useNavigate } from 'react-router'
 
 const Home = () => {
+
+    const { loading ,generateReport} = useInterview()
+    const[jobDescription, setJobDescription] = useState("")
+    const[selfDescription, setSelfDescription] = useState("")
+    const resumeInputRef = useRef ()
+
+    const navigate = useNavigate()
+
+    const handleGenerateReport = async () => {
+        const resumeFile = resumeInputRef.current.files[0]
+        const data = await generateReport({jobDescription, selfDescription, resumeFile})
+        navigate(`/interview/${data._id}`)
+    }
+
+
     return (
         <main className="home">
             <div className="container">
@@ -14,6 +31,7 @@ const Home = () => {
                             <span className="badge">REQUIRED</span>
                         </div>
                         <textarea
+                        onChange={(e)=> {setJobDescription(e.target.value)}}
                             id="jobDescription"
                             name="jobDescription"
                             className="job-description"
@@ -40,12 +58,14 @@ const Home = () => {
                                     <p className="upload-sub">PDF (Max 3MB)</p>
                                 </div>
                             </label>
-                            <input id="resume" name="resume" type="file" accept=".pdf" hidden />
+                            <input ref={resumeInputRef} id="resume" name="resume" type="file" accept=".pdf" hidden />
 
                             <div className="or-divider">OR</div>
 
                             <label htmlFor="selfDescription" className="sr-only">Quick Self-Description</label>
                             <textarea
+                            onChange={(e)=> {setSelfDescription(e.target.value)}}
+
                                 id="selfDescription"
                                 name="selfDescription"
                                 className="self-description"
@@ -57,7 +77,9 @@ const Home = () => {
                             </div>
 
                             <div className="actions">
-                                <button className="generate-btn">Generate My Interview Strategy</button>
+                                <button
+                                onClick={handleGenerateReport}
+                                 className="generate-btn">Generate My Interview Strategy</button>
                             </div>
                         </div>
                     </div>
