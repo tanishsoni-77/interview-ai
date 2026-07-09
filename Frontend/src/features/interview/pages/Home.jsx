@@ -18,6 +18,10 @@ const Home = () => {
         navigate(`/interview/${data._id}`)
     }
 
+    if(loading){
+        return <div className="loading">Generating your interview strategy...</div>
+    }
+
 
     return (
         <main className="home">

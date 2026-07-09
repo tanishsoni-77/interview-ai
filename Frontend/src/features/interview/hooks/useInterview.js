@@ -12,42 +12,55 @@ export const useInterview = () => {
     const {loading, setLoading, report, setReport, reports, setReports} = context
 
     const generateReport = async ({jobDescription, selfDescription, resumeFile}) => {
-        setLoading(true)
+    setLoading(true)
+    let response;
 
-        try {
-            const response = await generateInterviewReport({jobDescription, selfDescription, resumeFile})
-            setReport(response.interviewReport)
-        } catch (error) {
-            console.log(error)
-        }finally {
-            setLoading(false)
-        }
-    
-        
+    try {
+        response = await generateInterviewReport({jobDescription, selfDescription, resumeFile})
+
+        console.log("API RESPONSE:", response)
+
+        setReport(response.interviewReport)
+
+        return response.interviewReport
+
+    } catch (error) {
+        console.log(error)
+    } finally {
+        setLoading(false)
     }
+}
 
     const getReportById = async (interviewId) => {
-        setLoading(true)
-        try {
-            const response = await getInterviewReportById(interviewId)
-            setReport(response.interviewReport)
-        } catch (error) {
-            console.log(error)
-        }finally {
-            setLoading(false)
-        } 
+    setLoading(true)
+    let response;
+
+    try {
+        response = await getInterviewReportById(interviewId)
+
+        setReport(response.interviewReport)
+
+        return response.interviewReport
+
+    } catch (error) {
+        console.log(error)
+    } finally {
+        setLoading(false)
     }
+}
 
     const getReports = async () => {
     setLoading(true)
+     let response = null
     try {
-        const response = await getAllInterviewReports()
-        setReports(response.interviewReports)
+          const response = await getAllInterviewReports()
+          setReports(response.interviewReports)
     } catch (error) {
         console.log(error)
     }finally {
         setLoading(false)
     }
+    return response.interviewReports
 
 
 
