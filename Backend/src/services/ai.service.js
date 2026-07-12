@@ -3,6 +3,7 @@
 const {GoogleGenAI} = require("@google/genai")
 const {z} = require("zod")
 const {zodToJsonSchema} = require("zod-to-json-schema")
+const puppeteer = require("puppeteer")
 
 const ai =new GoogleGenAI({
     apiKey:process.env.GOOGLE_GENAI_API_KEY
@@ -61,5 +62,52 @@ async function  generateInterviewReport({resume, selfDescription, jobDescription
     
 
 }
+async function generatePdfFromHtml(htmlContent) {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.setContent(htmlContent,{ waitUntil: 'networkidle0' });
+    const pdfBuffer = await page.pdf({ format: 'A4' });
+    await browser.close();
+    return pdfBuffer;
+  }
 
-module.exports = generateInterviewReport
+
+ async function generateResumePdf({resume,selfDescription, jobDescription}){
+    const resumePdfSchema = z.object({
+        html: z.string().describe("The HTML content of the resume which can be converted to PDF using puppeteer or any other library"), 
+ })
+  
+ prompt = `Generate a resume for a candidate with the following details:
+        Resume: ${resume}
+        Self Description: ${selfDescription}
+        Job Description: ${jobDescription}
+the respnse should be  a JSON  object  with a single feild "html" which contains the HTML content of the resume which can be converted to PDF using puppeteer or any other library.
+The resume  should ne tailored to the job description and should highlight the
+candidate's skills and experience that are relevant to the job.
+The resume should be in a professional format and should be easy to read and understand. The resume should be in a single page A4 size and should not exceed 3MB in size.
+The  content of resume should not be sound like it is ai generated and should be as close as possible to a real human- written resume.
+You ca highlight the content using some color or different font style but the resume should be in a professional format and should be easy to read and understand. 
+`
+const response = await ai.models.generateContent({
+    model:"gemini-3-flash-preview",
+    contents:prompt,
+    config:{
+        responseMimeType:"application/json",
+        responseSchema:zodToJsonSchema(resumePdfSchema)
+    }
+})
+        const jsonContent = JSON.parse(response.text)
+        const pdfBuffer = await generatePdfFromHtml(jsonContent.html)
+        return pdfBuffer
+}
+
+ 
+
+
+
+
+module.exports = {
+    generateInterviewReport,
+    generateResumePdf,
+    generatePdfFromHtml
+}
