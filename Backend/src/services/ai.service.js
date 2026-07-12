@@ -66,7 +66,14 @@ async function generatePdfFromHtml(htmlContent) {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.setContent(htmlContent,{ waitUntil: 'networkidle0' });
-    const pdfBuffer = await page.pdf({ format: 'A4' });
+    const pdfBuffer = await page.pdf({ format: 'A4',
+        margin:{
+            top:"20px",
+            bottom:"20px",
+            left:"20px",
+            right:"20px"
+        }
+     });
     await browser.close();
     return pdfBuffer;
   }
@@ -87,6 +94,8 @@ candidate's skills and experience that are relevant to the job.
 The resume should be in a professional format and should be easy to read and understand. The resume should be in a A4 size page and should not exceed 3MB in size.
 The  content of resume should not be sound like it is ai generated and should be as close as possible to a real human- written resume.
 You ca highlight the content using some color or different font style but the resume should be in a professional format and should be easy to read and understand. 
+The content should me ATS friendly i.e it easily parsable by ATS system  without losing important  information.
+The resume should not be lengthy, it should  ideally  be 1-2 pages long when converted to PDF. Focus on quality rather than quantity  and make sure to include all the realavant information that can increase the candidate's chances of getting an interview call  for the given  job description.
 `
 const response = await ai.models.generateContent({
     model:"gemini-3-flash-preview",
