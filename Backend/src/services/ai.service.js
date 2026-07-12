@@ -84,7 +84,7 @@ async function generatePdfFromHtml(htmlContent) {
 the respnse should be  a JSON  object  with a single feild "html" which contains the HTML content of the resume which can be converted to PDF using puppeteer or any other library.
 The resume  should ne tailored to the job description and should highlight the
 candidate's skills and experience that are relevant to the job.
-The resume should be in a professional format and should be easy to read and understand. The resume should be in a single page A4 size and should not exceed 3MB in size.
+The resume should be in a professional format and should be easy to read and understand. The resume should be in a A4 size page and should not exceed 3MB in size.
 The  content of resume should not be sound like it is ai generated and should be as close as possible to a real human- written resume.
 You ca highlight the content using some color or different font style but the resume should be in a professional format and should be easy to read and understand. 
 `
