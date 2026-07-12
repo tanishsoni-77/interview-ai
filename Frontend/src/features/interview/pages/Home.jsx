@@ -1,11 +1,15 @@
+
 import React ,{useState, useRef}from 'react'
 import "../style/home.scss"
 import { useInterview } from '../hooks/useInterview.js'
 import { useNavigate } from 'react-router'
+import { useEffect } from "react";
 
 const Home = () => {
 
-    const { loading ,generateReport} = useInterview()
+    const { loading, generateReport, reports, getReports } = useInterview();
+    console.log("reports =", reports);
+    
     const[jobDescription, setJobDescription] = useState("")
     const[selfDescription, setSelfDescription] = useState("")
     const resumeInputRef = useRef ()
@@ -18,10 +22,17 @@ const Home = () => {
         navigate(`/interview/${data._id}`)
     }
 
+    useEffect(() => {
+  getReports();
+}, []);
+
+
     if(loading){
         return <div className="loading">Generating your interview strategy...</div>
     }
 
+
+    
 
     return (
         <main className="home">
@@ -48,6 +59,8 @@ const Home = () => {
                         </div>
                     </div>
 
+                    
+                
                     <div className="right-panel">
                         <div className="profile-card">
                             <div className="profile-header">
@@ -88,6 +101,25 @@ const Home = () => {
                         </div>
                     </div>
                 </section>
+
+                {/*recent reports section*/}
+
+                    {reports && reports.length > 0 && (
+                        <div className="recent-reports">
+                            <h3>Recent Reports</h3>
+                            <ul>
+                                { reports.map((report) => (
+                                    <li key={report._id}>
+                                        <h3>{report.title}</h3>
+                                        <a href={`/interview/${report._id}`}>View Report</a>
+                                        <p className="report-description">{report.description}</p>
+                                        <p>{report.date}</p>
+                                      
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
             </div>
         </main>
     )

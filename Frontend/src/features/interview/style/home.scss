@@ -118,3 +118,56 @@ $accent: #ff2f7a;
     .home .left-panel{ max-width:100% }
     .home .right-panel{ max-width:100% }
 }
+
+.recent-reports {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: #0F161A; // ya .card ka jo background ho
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+  h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+
+  }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    padding: 1rem;
+    border-radius: 1rem;
+    background: #172127;
+    transition: transform 0.2s ease;
+  }
+
+  li:hover {
+    transform: translateY(-2px);
+  }
+
+  .recent-reports a {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #4f46e5;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.recent-reports a:hover {
+  background: #4338ca;
+}
+
+  
+}
+
+  
