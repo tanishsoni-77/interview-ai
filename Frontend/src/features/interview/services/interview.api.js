@@ -41,3 +41,13 @@ export const getAllInterviewReports = async () => {
     const response = await api.get("/api/interview/")
     return response.data
 }
+
+/**
+ * @description generate resume pdf on the basis of user selfdescription , job description and  resume
+ */
+export const generateResumePdf = async ({interviewId}) => {
+    const response = await api.post(`/api/interview/resume/pdf/${interviewId}`,null,{
+        responseType:"blob"
+    })
+    return response.data
+}

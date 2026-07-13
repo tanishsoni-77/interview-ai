@@ -1,4 +1,4 @@
-import{getAllInterviewReports,generateInterviewReport, getInterviewReportById} from "../services/interview.api"
+import{getAllInterviewReports,generateInterviewReport, getInterviewReportById,generateResumePdf} from "../services/interview.api"
 import {useContext} from "react"
 import { InterviewContext } from "../interview.context.jsx"
 
@@ -66,9 +66,26 @@ export const useInterview = () => {
 
   }
 
-return { loading, report, reports, generateReport, getReportById, getReports}
+  const getResumePdf = async ({interviewId}) => {
+    setLoading(true)
+    let response;
+    try {
+        response = await generateResumePdf({interviewId})
+        const url = window.URL.createObjectURL(new Blob([response], { type: 'application/pdf' }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute("download", `resume_${interviewId}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        
+    } catch (error) {
+        console.log(error)
+    } finally {
+        setLoading(false)
+    } 
 
+  }
+
+  return { loading, report, reports, generateReport, getReportById, getReports,getResumePdf}
 
 }
-
-
