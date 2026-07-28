@@ -16,43 +16,56 @@ const handleSubmit = async (e) =>{
  navigate('/')
 }
 if(loading){
-  return (<main><h1>Loading...</h1></main>)
+  return (<main className="auth-shell"><div className="auth-loading"><div className="auth-loading__spinner" /><h1>Loading...</h1></div></main>)
 }
 
-
-
   return (
-    <main>
-      <div className="form-container">
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label htmlFor="email">Email</label>
-            <input 
-            onChange={(e)=> {setEmail(e.target.value)}}
-             type="email"
-             id="email"
-             placeholder='Enter email address'
-             />
+    <main className="auth-shell">
+      <div className="auth-card">
+        <div className="auth-card__glow" />
+        <div className="auth-card__content">
+          <div className="auth-brand">
+            <div className="auth-brand__mark">AI</div>
+            <div>
+              <h1>Interview AI</h1>
+              <p>Prepare smarter. Crack interviews with AI.</p>
+            </div>
           </div>
 
-          <div className="input-group">
-            <label htmlFor="password">Password</label>
-            <input 
-            onChange={(e)=> {setPassword(e.target.value)}}
-            type="password" 
-            id="password" 
-           placeholder='Enter your password'
-             />
-          </div>
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="input-group">
+              <label htmlFor="email">Email</label>
+              <div className="input-field">
+                <span className="input-field__icon">✉</span>
+                <input 
+                  onChange={(e)=> {setEmail(e.target.value)}}
+                  type="email"
+                  id="email"
+                  placeholder='Enter email address'
+                />
+              </div>
+            </div>
 
-          <button className='button primary-button'>Login</button>
+            <div className="input-group">
+              <label htmlFor="password">Password</label>
+              <div className="input-field">
+                <span className="input-field__icon">●</span>
+                <input 
+                  onChange={(e)=> {setPassword(e.target.value)}}
+                  type="password" 
+                  id="password" 
+                  placeholder='Enter your password'
+                />
+              </div>
+            </div>
 
+            <button className='button primary-button'>Login</button>
+          </form>
 
-
-        </form>
-        <p> Don't have an account? <Link to={"/register"}>Register</Link> </p>
-
+          <p className="auth-switcher">
+            Don&apos;t have an account? <Link to={"/register"}>Register</Link>
+          </p>
+        </div>
       </div>
     </main>
   )

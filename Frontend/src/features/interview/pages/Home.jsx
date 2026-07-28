@@ -8,7 +8,6 @@ import { useEffect } from "react";
 const Home = () => {
 
     const { loading, generateReport, reports, getReports } = useInterview();
-    console.log("reports =", reports);
     
     const[jobDescription, setJobDescription] = useState("")
     const[selfDescription, setSelfDescription] = useState("")
@@ -28,16 +27,18 @@ const Home = () => {
 
 
     if(loading){
-        return <div className="loading">Generating your interview strategy...</div>
+        return <div className="home-loading">Generating your interview strategy...</div>
     }
-
-
-    
 
     return (
         <main className="home">
             <div className="container">
-                <h1 className="title">Create Your Custom <span className="accent">Interview Plan</span></h1>
+                <div className="hero-block">
+                    <div>
+                        <h1 className="title">Create Your Custom <span className="accent">Interview Plan</span></h1>
+                        <p className="subtitle">Turn a job description and your experience into a tailored interview strategy in seconds.</p>
+                    </div>
+                </div>
 
                 <section className="card">
                     <div className="left-panel">
@@ -46,7 +47,7 @@ const Home = () => {
                             <span className="badge">REQUIRED</span>
                         </div>
                         <textarea
-                        onChange={(e)=> {setJobDescription(e.target.value)}}
+                            onChange={(e)=> {setJobDescription(e.target.value)}}
                             id="jobDescription"
                             name="jobDescription"
                             className="job-description"
@@ -59,8 +60,6 @@ const Home = () => {
                         </div>
                     </div>
 
-                    
-                
                     <div className="right-panel">
                         <div className="profile-card">
                             <div className="profile-header">
@@ -81,8 +80,7 @@ const Home = () => {
 
                             <label htmlFor="selfDescription" className="sr-only">Quick Self-Description</label>
                             <textarea
-                            onChange={(e)=> {setSelfDescription(e.target.value)}}
-
+                                onChange={(e)=> {setSelfDescription(e.target.value)}}
                                 id="selfDescription"
                                 name="selfDescription"
                                 className="self-description"
@@ -95,31 +93,31 @@ const Home = () => {
 
                             <div className="actions">
                                 <button
-                                onClick={handleGenerateReport}
-                                 className="generate-btn">Generate My Interview Strategy</button>
+                                    onClick={handleGenerateReport}
+                                    className="generate-btn">Generate My Interview Strategy</button>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/*recent reports section*/}
-
-                    {reports && reports.length > 0 && (
-                        <div className="recent-reports">
+                {reports && reports.length > 0 && (
+                    <div className="recent-reports">
+                        <div className="recent-reports__header">
                             <h3>Recent Reports</h3>
-                            <ul>
-                                { reports.map((report) => (
-                                    <li key={report._id}>
-                                        <h3>{report.title}</h3>
-                                        <a href={`/interview/${report._id}`}>View Report</a>
-                                        <p className="report-description">{report.description}</p>
-                                        <p>{report.date}</p>
-                                      
-                                    </li>
-                                ))}
-                            </ul>
+                            <span className="recent-reports__badge">Saved</span>
                         </div>
-                    )}
+                        <ul>
+                            { reports.map((report) => (
+                                <li key={report._id}>
+                                    <h3>{report.title}</h3>
+                                    <a href={`/interview/${report._id}`}>View Report</a>
+                                    <p className="report-description">{report.description}</p>
+                                    <p className="report-date">{report.date}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
             </div>
         </main>
     )

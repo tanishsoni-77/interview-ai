@@ -1,15 +1,12 @@
 ﻿import React,{useState,useEffect} from 'react'
 import '../style/interview.scss'
 import {useInterview} from "../hooks/useInterview.js"
-import { useNavigate, useParams } from 'react-router'
-
-
-
-
+import { useParams } from 'react-router'
 
 const Interview = ({ data }) => {
     const {report , getReportById} = useInterview();
     data = data ?? report;
+    const [activeSection, setActiveSection] = useState('technical');
 
     const {interviewId} = useParams();
 
@@ -29,87 +26,104 @@ const Interview = ({ data }) => {
         <div className="interview-card">
           <aside className="nav-panel">
             <div className="nav-header">SECTIONS</div>
-            <a href="#technical" className="nav-link active">Technical Questions</a>
-            <a href="#behavioral" className="nav-link">Behavioral Questions</a>
-            <a href="#roadmap" className="nav-link">Road Map</a>
+            <a href="#technical" className={`nav-link ${activeSection === 'technical' ? 'active' : ''}`} onClick={(event) => {
+              event.preventDefault();
+              setActiveSection('technical');
+            }}>Technical Questions</a>
+            <a href="#behavioral" className={`nav-link ${activeSection === 'behavioral' ? 'active' : ''}`} onClick={(event) => {
+              event.preventDefault();
+              setActiveSection('behavioral');
+            }}>Behavioral Questions</a>
+            <a href="#roadmap" className={`nav-link ${activeSection === 'roadmap' ? 'active' : ''}`} onClick={(event) => {
+              event.preventDefault();
+              setActiveSection('roadmap');
+            }}>Road Map</a>
           </aside>
 
           <section className="main-panel">
-            <header className="main-header">
-              <div>
-                <h1>Technical Questions</h1>
-                <p className="subtext">{data.technicalQuestions.length} questions</p>
-              </div>
-            </header>
-
-            <div className="question-list">
-              {data.technicalQuestions.map((item, index) => (
-                <details key={index} className="question-item" open={index === 0}>
-                  <summary>
-                    <span className="question-badge">Q{index + 1}</span>
-                    <span>{item.question}</span>
-                  </summary>
-                  <div className="question-body">
-                    <div className="question-section">
-                      <div className="label">INTENTION</div>
-                      <p>{item.intention}</p>
-                    </div>
-                    <div className="question-section">
-                      <div className="label">MODEL ANSWER</div>
-                      <p>{item.answer}</p>
-                    </div>
+            {activeSection === 'technical' && (
+              <>
+                <header className="main-header">
+                  <div>
+                    <h1>Technical Questions</h1>
+                    <p className="subtext">{data.technicalQuestions.length} questions</p>
                   </div>
-                </details>
-              ))}
-            </div>
+                </header>
 
-            <section id="behavioral" className="section-block">
-              <div className="section-header">
-                <h2>Behavioral Questions</h2>
-              </div>
-              {data.behavioralQuestions.map((item, index) => (
-                <article key={index} className="behavioral-card">
-                  <h3>{item.question}</h3>
-                  <p className="intent">Intent: {item.intention}</p>
-                  <p className="answer">{item.answer}</p>
-                </article>
-              ))}
-            </section>
+                <div className="question-list">
+                  {data.technicalQuestions.map((item, index) => (
+                    <details key={index} className="question-item" open={index === 0}>
+                      <summary>
+                        <span className="question-badge">Q{index + 1}</span>
+                        <span>{item.question}</span>
+                      </summary>
+                      <div className="question-body">
+                        <div className="question-section">
+                          <div className="label">INTENTION</div>
+                          <p>{item.intention}</p>
+                        </div>
+                        <div className="question-section">
+                          <div className="label">MODEL ANSWER</div>
+                          <p>{item.answer}</p>
+                        </div>
+                      </div>
+                    </details>
+                  ))}
+                </div>
+              </>
+            )}
 
-            <section id="roadmap" className="section-block roadmap-block">
-              <div className="section-header">
-                <h2>Preparation Road Map</h2>
-                <span className="small-badge">7-day plan</span>
-              </div>
+            {activeSection === 'behavioral' && (
+              <section id="behavioral" className="section-block">
+                <div className="section-header">
+                  <h2>Behavioral Questions</h2>
+                </div>
+                {data.behavioralQuestions.map((item, index) => (
+                  <article key={index} className="behavioral-card">
+                    <h3>{item.question}</h3>
+                    <p className="intent">Intent: {item.intention}</p>
+                    <p className="answer">{item.answer}</p>
+                  </article>
+                ))}
+              </section>
+            )}
 
-              <div className="timeline">
-  {data.preparationPlan.map((item) => (
-    <div key={item.day} className="timeline-row">
+            {activeSection === 'roadmap' && (
+              <section id="roadmap" className="section-block roadmap-block">
+                <div className="section-header">
+                  <h2>Preparation Road Map</h2>
+                  <span className="small-badge">7-day plan</span>
+                </div>
 
-      <div className="timeline-marker" aria-hidden>
-        <span className="dot" />
-      </div>
+                <div className="timeline">
+                  {data.preparationPlan.map((item) => (
+                    <div key={item.day} className="timeline-row">
 
-      <div className="timeline-card">
-        <div className="timeline-day">
-          Day {item.day}
-        </div>
+                      <div className="timeline-marker" aria-hidden>
+                        <span className="dot" />
+                      </div>
 
-        <h3 className="timeline-title">
-          {item.focus}
-        </h3>
+                      <div className="timeline-card">
+                        <div className="timeline-day">
+                          Day {item.day}
+                        </div>
 
-        <ul className="timeline-tasks">
-          {item.tasks.map((t, i) => (
-            <li key={i}>{t}</li>
-          ))}
-        </ul>
-      </div>
+                        <h3 className="timeline-title">
+                          {item.focus}
+                        </h3>
 
-    </div>
-  ))}
-</div>
-            </section>
+                        <ul className="timeline-tasks">
+                          {item.tasks.map((t, i) => (
+                            <li key={i}>{t}</li>
+                          ))}
+                        </ul>
+                      </div>
+
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
           </section>
 
           <aside className="aside-panel">
