@@ -63,22 +63,35 @@ async function  generateInterviewReport({resume, selfDescription, jobDescription
 
 }
 async function generatePdfFromHtml(htmlContent) {
-    const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
+
+  try {
     const page = await browser.newPage();
-    await page.setContent(htmlContent,{ waitUntil: 'networkidle0' });
-    const pdfBuffer = await page.pdf({ format: 'A4',
-        margin:{
-            top:"20px",
-            bottom:"20px",
-            left:"20px",
-            right:"20px"
-        }
-     });
-    await browser.close();
+
+    await page.setContent(htmlContent, {
+      waitUntil: "domcontentloaded",
+      timeout: 60000,
+    });
+
+    const pdfBuffer = await page.pdf({
+      format: "A4",
+      printBackground: true,
+      margin: {
+        top: "20px",
+        bottom: "20px",
+        left: "20px",
+        right: "20px",
+      },
+    });
+
     return pdfBuffer;
+  } finally {
+    await browser.close();
   }
-
-
+}
  async function generateResumePdf({resume,selfDescription, jobDescription}){
     const resumePdfSchema = z.object({
         html: z.string().describe("The HTML content of the resume which can be converted to PDF using puppeteer or any other library"), 
