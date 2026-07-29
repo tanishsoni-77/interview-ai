@@ -68,7 +68,7 @@ export const useInterview = () => {
 
   const getResumePdf = async ({interviewId}) => {
     setLoading(true)
-    let response;
+    let response= null
     try {
         response = await generateResumePdf({interviewId})
         const url = window.URL.createObjectURL(new Blob([response], { type: 'application/pdf' }));
@@ -80,6 +80,7 @@ export const useInterview = () => {
         
     } catch (error) {
         console.log(error)
+        throw error
     } finally {
         setLoading(false)
     } 

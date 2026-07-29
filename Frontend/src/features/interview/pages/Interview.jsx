@@ -4,9 +4,11 @@ import {useInterview} from "../hooks/useInterview.js"
 import { useParams } from 'react-router'
 
 const Interview = ({ data }) => {
-    const {report , getReportById} = useInterview();
+    const {report , getReportById, getResumePdf} = useInterview();
     data = data ?? report;
     const [activeSection, setActiveSection] = useState('technical');
+    const [isGeneratingResume, setIsGeneratingResume] = useState(false);
+    const [resumeFeedback, setResumeFeedback] = useState({ message: '', type: 'info' });
     const radius = 56;
     const circumference = 2 * Math.PI * radius;
     const score = Number(data?.matchScore ?? 0);
@@ -21,6 +23,46 @@ const Interview = ({ data }) => {
 
     const scoreColor = getScoreColor(normalizedScore);
 
+    const iconProps = {
+      width: 22,
+      height: 22,
+      stroke: '#7c3aed',
+      strokeWidth: 2.2,
+      fill: 'none',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    };
+
+    const codeIcon = (
+      <svg viewBox="0 0 24 24" {...iconProps}>
+        <polyline points="16 18 22 12 16 6" />
+        <polyline points="8 6 2 12 8 18" />
+      </svg>
+    );
+
+    const userIcon = (
+      <svg viewBox="0 0 24 24" {...iconProps}>
+        <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+        <path d="M9 7a4 4 0 1 1 8 0" />
+      </svg>
+    );
+
+    const mapIcon = (
+      <svg viewBox="0 0 24 24" {...iconProps}>
+        <polygon points="3 6 9 4 15 6 21 4 21 18 15 20 9 18 3 20 3 6" />
+        <line x1="9" y1="4" x2="9" y2="18" />
+        <line x1="15" y1="6" x2="15" y2="20" />
+      </svg>
+    );
+
+    const downloadIcon = (
+      <svg viewBox="0 0 24 24" {...iconProps}>
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <polyline points="7 10 12 15 17 10" />
+        <line x1="12" y1="15" x2="12" y2="3" />
+      </svg>
+    );
+
     const {interviewId} = useParams();
 
     useEffect(() => {
@@ -28,6 +70,72 @@ const Interview = ({ data }) => {
             getReportById(interviewId)
         }
     },[interviewId])
+
+    useEffect(() => {
+        if (!resumeFeedback.message) return;
+
+        const timer = window.setTimeout(() => {
+            setResumeFeedback({ message: '', type: 'info' });
+        }, 3200);
+
+        return () => window.clearTimeout(timer);
+    }, [resumeFeedback.message]);
+
+    const handleDownloadResume = async () => {
+        if (!interviewId) {
+            setResumeFeedback({ message: 'Resume is not available yet. Please try again.', type: 'error' });
+            return;
+        }
+
+        setIsGeneratingResume(true);
+        setResumeFeedback({ message: '', type: 'info' });
+
+        try {
+            await getResumePdf({ interviewId });
+            setResumeFeedback({ message: 'Resume downloaded successfully.', type: 'success' });
+        } catch (error) {
+            console.error(error);
+            setResumeFeedback({ message: 'We could not generate the resume right now. Please try again.', type: 'error' });
+        } finally {
+            setIsGeneratingResume(false);
+        }
+    };
+
+    const renderResumeAction = () => (
+      <div className="resume-action-wrapper">
+        <button
+          type="button"
+          className={`resume-download-btn ${isGeneratingResume ? 'is-loading' : ''}`}
+          onClick={handleDownloadResume}
+          disabled={isGeneratingResume}
+          aria-busy={isGeneratingResume}
+        >
+          {isGeneratingResume ? (
+            <>
+              <span className="resume-download-spinner" aria-hidden="true" />
+              <span>Generating Resume...</span>
+            </>
+          ) : (
+            <>
+              <span className="resume-download-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+              </span>
+              <span>Download ATS Resume</span>
+            </>
+          )}
+        </button>
+
+        {resumeFeedback.message && (
+          <div className={`resume-feedback ${resumeFeedback.type}`} role="status">
+            {resumeFeedback.message}
+          </div>
+        )}
+      </div>
+    );
 
     if (!data) {
   return <div>Loading...</div>;
@@ -51,6 +159,9 @@ const Interview = ({ data }) => {
               event.preventDefault();
               setActiveSection('roadmap');
             }}>Road Map</a>
+            <div className="nav-footer">
+              {renderResumeAction()}
+            </div>
           </aside>
 
           <section className="main-panel">
@@ -58,7 +169,10 @@ const Interview = ({ data }) => {
               <>
                 <header className="main-header">
                   <div>
-                    <h1>Technical Questions</h1>
+                    <h1 className="section-title">
+                      <span className="section-title__icon">{codeIcon}</span>
+                      Technical Questions
+                    </h1>
                     <p className="subtext">{data.technicalQuestions.length} questions</p>
                   </div>
                 </header>
@@ -89,7 +203,10 @@ const Interview = ({ data }) => {
             {activeSection === 'behavioral' && (
               <section id="behavioral" className="section-block">
                 <div className="section-header">
-                  <h2>Behavioral Questions</h2>
+                  <h2 className="section-title">
+                    <span className="section-title__icon">{userIcon}</span>
+                    Behavioral Questions
+                  </h2>
                 </div>
                 {data.behavioralQuestions.map((item, index) => (
                   <article key={index} className="behavioral-card">
@@ -98,13 +215,17 @@ const Interview = ({ data }) => {
                     <p className="answer">{item.answer}</p>
                   </article>
                 ))}
+                
               </section>
             )}
 
             {activeSection === 'roadmap' && (
               <section id="roadmap" className="section-block roadmap-block">
                 <div className="section-header">
-                  <h2>Preparation Road Map</h2>
+                  <h2 className="section-title">
+                    <span className="section-title__icon">{mapIcon}</span>
+                    Learning Roadmap
+                  </h2>
                   <span className="small-badge">7-day plan</span>
                 </div>
 

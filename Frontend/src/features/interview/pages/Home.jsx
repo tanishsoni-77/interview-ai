@@ -27,7 +27,40 @@ const Home = () => {
 
 
     if(loading){
-        return <div className="home-loading">Generating your interview strategy...</div>
+        const steps = [
+            '📄 Reading Resume...',
+            '🎯 Understanding Job Description...',
+            '🧠 Analyzing Skill Gaps...',
+            '💻 Generating Technical Questions...',
+            '💬 Generating Behavioral Questions...',
+            '🗺️ Creating Preparation Roadmap...',
+            '✨ Finalizing Report...'
+        ];
+
+        return (
+            <div className="home-loading">
+                <div className="home-loading__overlay" />
+                <div className="home-loading__card">
+                    <div className="home-loading__orb" />
+                    <div className="home-loading__content">
+                        <p className="home-loading__eyebrow">Interview AI</p>
+                        <h1 className="home-loading__title">Generating your personalized interview strategy...</h1>
+                        <div className="home-loading__progress" aria-hidden="true">
+                            <div className="home-loading__progress-bar" />
+                        </div>
+                        <ul className="home-loading__steps">
+                            {steps.map((step, index) => (
+                                <li key={step} className={`home-loading__step ${index === 0 ? 'active' : ''}`}>
+                                    <span className="home-loading__step-dot" />
+                                    <span>{step}</span>
+                                </li>
+                            ))}
+                        </ul>
+                        <p className="home-loading__footer">This usually takes 10–20 seconds.</p>
+                    </div>
+                </div>
+            </div>
+        )
     }
 
     return (
