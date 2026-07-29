@@ -410,43 +410,37 @@ $shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
     width: 170px;
     height: 170px;
     margin: 0 auto 16px;
-    border-radius: 50%;
     display: grid;
     place-items: center;
-    color: #fff;
-    font-size: 32px;
-    font-weight: 700;
     position: relative;
-    background:
-      radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.18), transparent 40%),
-      linear-gradient(135deg, rgba(124, 58, 237, 0.24), rgba(255, 255, 255, 0.04)),
-      rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(124, 58, 237, 0.28);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 20px 35px rgba(0, 0, 0, 0.22);
-    overflow: hidden;
 
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: conic-gradient($accent 0 72%, rgba(255, 255, 255, 0.08) 72% 100%);
-      mask: radial-gradient(circle at center, transparent 0 58px, black 58px);
-      -webkit-mask: radial-gradient(circle at center, transparent 0 58px, black 58px);
+    &__svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
     }
 
-    &::after {
-      content: '';
-      position: absolute;
-      inset: 12px;
-      border-radius: 50%;
-      background: rgba(7, 10, 14, 0.96);
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    &__track,
+    &__progress {
+      fill: none;
+      stroke-width: 12;
     }
 
-    span {
-      position: relative;
-      z-index: 1;
+    &__track {
+      stroke: rgba(255, 255, 255, 0.12);
+    }
+
+    &__progress {
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s ease;
+      filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.25));
+    }
+
+    &__value {
+      position: absolute;
+      color: #fff;
+      font-size: 32px;
+      font-weight: 700;
       text-shadow: 0 0 18px rgba(124, 58, 237, 0.35);
     }
   }

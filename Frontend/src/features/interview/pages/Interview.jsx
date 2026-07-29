@@ -7,6 +7,19 @@ const Interview = ({ data }) => {
     const {report , getReportById} = useInterview();
     data = data ?? report;
     const [activeSection, setActiveSection] = useState('technical');
+    const radius = 56;
+    const circumference = 2 * Math.PI * radius;
+    const score = Number(data?.matchScore ?? 0);
+    const normalizedScore = Math.max(0, Math.min(100, score));
+    const progressOffset = circumference - (normalizedScore / 100) * circumference;
+
+    const getScoreColor = (value) => {
+      if (value >= 80) return '#22C55E';
+      if (value >= 60) return '#F59E0B';
+      return '#EF4444';
+    };
+
+    const scoreColor = getScoreColor(normalizedScore);
 
     const {interviewId} = useParams();
 
@@ -130,9 +143,20 @@ const Interview = ({ data }) => {
             <div className="score-card">
               <div className="score-header">MATCH SCORE</div>
               <div className="score-ring">
-                <span>{data.matchScore}%</span>
+                <svg className="score-ring__svg" viewBox="0 0 140 140" aria-label="Match score ring">
+                  <circle className="score-ring__track" cx="70" cy="70" r={radius} />
+                  <circle
+                    className="score-ring__progress"
+                    cx="70"
+                    cy="70"
+                    r={radius}
+                    stroke={scoreColor}
+                    strokeDasharray={circumference}
+                    strokeDashoffset={progressOffset}
+                  />
+                </svg>
+                <span className="score-ring__value">{data.matchScore}%</span>
               </div>
-              <p className="score-subtext">Strong match for this role</p>
             </div>
 
             <div className="skills-card">
