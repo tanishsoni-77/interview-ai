@@ -58,6 +58,8 @@ async function getInterviewReportByIdController (req, res) {
    * @description get all interview reports of the logged in user
    */
 async function getAllInterviewReportsController (req, res) {
+    console.log("REQ.FILE =", req.file);
+    console.log("REQ.BODY =", req.body);
     const interviewReports = await interviewReportModel.find({user:req.user.id})
     .sort({createdAt:-1}).select("-resume -selfDescription -jobDescription -__v -technicalQuestions -behavioralQuestions -skillGaps -preparationPlan")
 
