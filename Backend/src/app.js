@@ -7,7 +7,8 @@ app.use(express.json())
 app.use(cookieParser())
 const allowedOrigins = [
     "http://localhost:5173",
-    "https://interview-ai-rho-rose.vercel.app"
+    "https://interview-ai-rho-rose.vercel.app",
+    "https://interview-fhfhpsm7f-tanish24.vercel.app"
 ];
 
 app.use(cors({
