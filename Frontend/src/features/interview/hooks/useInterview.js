@@ -49,13 +49,16 @@ export const useInterview = () => {
     }
 }
 
-    const getReports = async () => {
+   const getReports = async () => {
     setLoading(true);
 
     try {
         const response = await getAllInterviewReports();
+
         setReports(response.interviewReports);
+
         return response.interviewReports;
+
     } catch (error) {
         console.log(error);
         return [];
