@@ -18,7 +18,7 @@ const Register = () => {
   }
 
   if(loading){
-  return (<main className="auth-shell"><div className="auth-loading"><div className="auth-loading__spinner" /><h1>Loading...</h1></div></main>)
+  return (<main className="auth-shell"><div clas UI design user interfacesName="auth-loading"><div className="auth-loading__spinner" /><h1>Loading...</h1></div></main>)
 }
 
   return (
