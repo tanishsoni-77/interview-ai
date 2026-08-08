@@ -2,6 +2,7 @@
 import '../style/interview.scss'
 import {useInterview} from "../hooks/useInterview.js"
 import { useParams } from 'react-router'
+import LogoutButton from '../components/LogoutButton.jsx'
 
 const Interview = ({ data }) => {
     const {report , getReportById, getResumePdf} = useInterview();
@@ -290,6 +291,7 @@ const Interview = ({ data }) => {
                 ))}
               </div>
             </div>
+            <LogoutButton />
           </aside>
         </div>
       </div>
